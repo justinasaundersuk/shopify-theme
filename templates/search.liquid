@@ -1,0 +1,28 @@
+{% paginate search.results by 5 %}
+
+{% if search.performed %}
+  <h1>Search results</h1>
+
+  {% for item in search.results %}
+    <h3>{{ item.object_type }}</h3>
+    <div>
+      {% if item.object_type == "page" %}
+        {{ item.title | link_to: item.url }}
+        {{ item.content | highlight: search.terms }}
+      {% elsif item.object_type == "article" %}
+        {{ item.title | link_to: item.url }}
+        {{ item.content | highlight: search.terms }}
+      {% else %}
+          {{ item.title | link_to: item.url }}
+          {{ item.content | highlight: search.terms }}
+          <img src="{{ item.featured_image | image_url: width: 200 }}" />
+      {% endif%}
+    </div>
+    <hr />
+  {% endfor %}
+{% else %}
+  <h1>Try searching for something</h1>
+{% endif %}
+
+{{ paginate | default_pagination }}
+{% endpaginate %}
